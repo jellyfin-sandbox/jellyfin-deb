@@ -34,5 +34,8 @@ jobs:
 
       - name: "Build DEB"
         run: |-
+          ls -la . jellyfin-deb jellyfin-web
+          pusd jellyfin-web
           dpkg-buildpackage -us -uc --pre-clean --post-clean
+          popd
           ls -la . jellyfin-deb jellyfin-web
