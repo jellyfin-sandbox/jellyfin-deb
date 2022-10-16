@@ -1,0 +1,36 @@
+name: "📦 Build Web-Client Package"
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
+jobs:
+  buildDeb:
+    runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/deb-builder:20221016
+      env:
+        DEB_BUILD_OPTIONS: noddebs
+    steps:
+      - name: "Checkout DEB Repository"
+        uses: actions/checkout@v3
+        with:
+          path: /tmp/jellyfin-deb
+
+      - name: "Checkout Code Repository"
+        uses: actions/checkout@v3
+        with:
+          repository: jellyfin-sandbox/jellyfin-web-sandbox
+
+      - name: "Copy debian Folder"
+        run: cp /tmp/jellyfin-deb/web-client debian
+
+      - name: "Build DEB"
+        run: ls -la
+
