@@ -21,16 +21,17 @@ jobs:
       - name: "Checkout DEB Repository"
         uses: actions/checkout@v3
         with:
-          path: /tmp/jellyfin-deb
+          path: jellyfin-deb
 
       - name: "Checkout Code Repository"
         uses: actions/checkout@v3
         with:
+          path: jellyfin-web
           repository: jellyfin-sandbox/jellyfin-web-sandbox
 
       - name: "Copy debian Folder"
-        run: cp /tmp/jellyfin-deb/web-client debian
+        run: cp jellyfin-deb/web-client jellyfin-web/debian
 
       - name: "Build DEB"
-        run: ls -la
+        run: ls -la . jellyfin-deb jellyfin-web
 
