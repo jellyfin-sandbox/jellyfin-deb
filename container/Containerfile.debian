@@ -7,6 +7,7 @@ RUN apt-get update -qqy \
       mmv \
       git \
       curl \
+      ca-certificates \
     && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
       nodejs \
