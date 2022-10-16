@@ -14,7 +14,7 @@ jobs:
   buildDeb:
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/${{ github.repository_owner }}/deb-builder:20221016
+      image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:20221016
       env:
         DEB_BUILD_OPTIONS: noddebs
     steps:
