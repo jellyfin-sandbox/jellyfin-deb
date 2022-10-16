@@ -1,6 +1,11 @@
 name: "🗜️ Pre-Build Package Container"
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - container/**
   workflow_dispatch:
 
 permissions:
