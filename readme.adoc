@@ -1,0 +1,28 @@
+[[jellyfin-deb]]
+= Jellyfin-deb
+
+Part of the link:https://jellyfin.org[Jellyfin Project]
+
+image:https://raw.githubusercontent.com/jellyfin/jellyfin-ux/master/branding/SVG/banner-logo-solid.svg?sanitize=true[Jellyfin Logo Banner]
+
+image:https://img.shields.io/github/license/jellyfin-sandbox/jellyfin-container.svg[GPL 3.0 license,link="https://github.com/jellyfin-sandbox/jellyfin-container"]
+image:https://img.shields.io/opencollective/all/jellyfin.svg?label=backers[Donate,link="https://opencollective.com/jellyfin"]
+image:https://img.shields.io/matrix/jellyfin-android-dev:matrix.org.svg?logo=matrix[Chat on Matrix,link="https://matrix.to/#/+jellyfin-android-dev:matrix.org"]
+image:https://img.shields.io/badge/reddit-r%2Fjellyfin-%23FF5700.svg[Join our Subreddit,link="https://www.reddit.com/r/jellyfin"]
+
+'''
+
+This repository holds all the necessary scripts, workflows and descriptors to build and release the official Jellyfin DEB packages for Debian, Ubuntu and other Debian based derivatives.
+
+== Contributing
+
+All kinds of contributions are welcome as long as they conform to the contribution guidelines set forth by the link:https://github.com/jellyfin/.github/blob/master/CONTRIBUTING.md[Organisation global guidelines].
+Additionally, we request that you open an issue or ask in our official chats if you plan to make bigger changes.
+
+== Licence
+
+image:https://www.gnu.org/graphics/gplv3-or-later.svg[link="https://opensource.org/licenses/GPL-3.0"]
+
+The scope of the licence of this repository solely covers the GHA Workflow scripts, any other scripts and directly contained material of this repository are covered by their respective licence found within the subdirectories.
+Everything is covered by the licence provided in the closest root folder containing a file.
+The rest is provided under the terms of the GNU Public Licence 3 or later.
