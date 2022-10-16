@@ -33,5 +33,6 @@ jobs:
         run: cp -r jellyfin-deb/web-client jellyfin-web/debian
 
       - name: "Build DEB"
-        run: ls -la . jellyfin-deb jellyfin-web
-
+        run: |-
+          dpkg-buildpackage -us -uc --pre-clean --post-clean
+          ls -la . jellyfin-deb jellyfin-web
