@@ -39,7 +39,7 @@ jobs:
           dpkg-buildpackage -us -uc --pre-clean --post-clean
           popd
           mkdir out
-          mv jellyfin-{web,server}.{deb,dsc,tar.gz,buildinfo,changes} out
+          mv jellyfin-{web,server}*.{deb,dsc,tar.gz,buildinfo,changes} out
           ls -la . jellyfin-deb jellyfin-web out
 
       - name: "Publish Validation Artifact"
