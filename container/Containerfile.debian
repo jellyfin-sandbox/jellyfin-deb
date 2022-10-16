@@ -1,0 +1,13 @@
+FROM docker.io/library/debian:11
+
+# Prepare Debian build environment
+RUN apt-get update -qqy \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
+      debhelper \
+      mmv \
+      git \
+      curl \
+    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
+      nodejs \
+    && rm -rf /var/lib/apt/lists/*
