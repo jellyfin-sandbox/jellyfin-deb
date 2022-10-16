@@ -4,6 +4,8 @@ FROM docker.io/library/debian:11
 RUN apt-get update -qqy \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
       debhelper \
+      dh-make \
+      build-essential \
       mmv \
       git \
       curl \
