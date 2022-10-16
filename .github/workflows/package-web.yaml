@@ -30,7 +30,7 @@ jobs:
           repository: jellyfin-sandbox/jellyfin-web-sandbox
 
       - name: "Copy debian Folder"
-        run: cp jellyfin-deb/web-client jellyfin-web/debian
+        run: cp -r jellyfin-deb/web-client jellyfin-web/debian
 
       - name: "Build DEB"
         run: ls -la . jellyfin-deb jellyfin-web
