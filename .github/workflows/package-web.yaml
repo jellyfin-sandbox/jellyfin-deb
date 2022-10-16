@@ -38,4 +38,6 @@ jobs:
           pushd jellyfin-web
           dpkg-buildpackage -us -uc --pre-clean --post-clean
           popd
-          ls -la . jellyfin-deb jellyfin-web
+          mkdir out
+          mv jellyfin-{web,server}.{deb,dsc,tar.gz,buildinfo,changes} out
+          ls -la . jellyfin-deb jellyfin-web out
