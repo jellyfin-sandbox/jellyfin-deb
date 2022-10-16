@@ -41,3 +41,10 @@ jobs:
           mkdir out
           mv jellyfin-{web,server}.{deb,dsc,tar.gz,buildinfo,changes} out
           ls -la . jellyfin-deb jellyfin-web out
+
+      - name: "Publish Validation Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: jellyfin-web
+          path: out
+          if-no-files-found: error
