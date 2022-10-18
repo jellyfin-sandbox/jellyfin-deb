@@ -15,13 +15,19 @@ permissions:
 jobs:
   buildContianer:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        distro:
+          - debian
+          - ubuntu
+      fail-fast: false
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v3
 
       - name: "Gather Variables"
         run: |-
-          echo "CONTAINER_TAGS=$(date -u +'%Y%m%d')" >> $GITHUB_ENV
+          echo "CONTAINER_TAGS=${{ matrix.distro }}-$(date -u +'%Y%m%d')" >> $GITHUB_ENV
           echo "IMG_CREATED=$(date -u +'%Y-%m-%dT%H:%M:%S.%NZ')" >> $GITHUB_ENV
 
       - name: "Build Container Image"
@@ -36,7 +42,7 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/jellyfin-deb
           context: container
-          containerfiles: container/Containerfile.debian
+          containerfiles: container/Containerfile.${{ matrix.distro }}
 
       - name: "Push Container Image to ghcr.io"
         uses: redhat-actions/push-to-registry@v2.6
