@@ -1,4 +1,8 @@
-FROM docker.io/library/debian:11
+FROM docker.io/library/node:16.18.0-bullseye-slim as node-donor
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0.402-bullseye-slim
+
+COPY --from=node-donor /usr/local /usr/local
 
 # Prepare Debian build environment
 RUN apt-get update -qqy \
@@ -6,11 +10,22 @@ RUN apt-get update -qqy \
       debhelper \
       dh-make \
       build-essential \
+      devscripts \
+      gnupg \
       mmv \
+      bash \
       git \
       curl \
       ca-certificates \
-    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
-      nodejs \
-    && rm -rf /var/lib/apt/lists/*
+      libcurl4-openssl-dev \
+      libfontconfig1-dev \
+      libfreetype6-dev \
+      libssl-dev \
+      libssl1.1 \
+      liblttng-ust0 \
+    && rm -rf /var/lib/apt/lists/* \
+    # Smoke Tests
+    && set -ex || exit $?; \
+      dotnet --version; \
+      node --version; \
+      npm --version;
