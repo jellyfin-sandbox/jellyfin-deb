@@ -19,9 +19,8 @@ RUN apt-get update -qqy \
       libcurl4-openssl-dev \
       libfontconfig1-dev \
       libfreetype6-dev \
-      liblttng-ust0 \
+      liblttng-ust1 \
       libssl-dev \
-      libssl1.1 \
       mmv \
     && rm -rf /var/lib/apt/lists/* \
     # Smoke Tests
