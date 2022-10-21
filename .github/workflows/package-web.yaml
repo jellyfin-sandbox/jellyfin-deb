@@ -30,18 +30,10 @@ jobs:
           repository: jellyfin-sandbox/jellyfin-web-sandbox
 
       - name: "Copy debian Folder"
-        run: cp -r jellyfin-deb/web-client/debian jellyfin-web/debian
+        run: cp -r jellyfin-deb/web-client jellyfin-web
 
       - name: "Build DEB"
-        run: |-
-          ls -la . jellyfin-deb jellyfin-web
-          pushd jellyfin-web
-          sed -i -e '/npm | nodejs/d' -e 's/debhelper (>= 9),/debhelper (>= 9)/' debian/control
-          dpkg-buildpackage -us -uc --pre-clean --post-clean
-          popd
-          mkdir out
-          mv jellyfin-web*.{deb,dsc,tar.gz,buildinfo,changes} out
-          ls -la . jellyfin-deb jellyfin-web out
+        run: bash jellyfin-web/buildDebInContainer.sh
 
       - name: "Publish Validation Artifact"
         uses: actions/upload-artifact@v3
