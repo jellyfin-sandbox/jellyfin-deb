@@ -11,7 +11,26 @@ permissions:
   contents: read
 
 jobs:
+  gatherFacts:
+    runs-on: ubuntu-22.04
+    outputs:
+      appVersion: ${{ steps.variables.outputs.APP_VERSION }}
+      appGitSha: ${{ steps.variables.outputs.APP_GIT_SHA }}
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v3
+
+      - name: "Gather Variables"
+        id: variables
+        run: |-
+          set -exu
+
+          echo "APP_VERSION=$(yq --exit-status '.version' web-client/metaValues.yaml)" >> ${GITHUB_OUTPUT}
+          echo "APP_GIT_SHA=$(yq --exit-status '.git_sha' web-client/metaValues.yaml)" >> ${GITHUB_OUTPUT}
+
   buildDeb:
+    needs:
+      - gatherFacts
     runs-on: ubuntu-22.04
     container:
       image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:debian-20221018
@@ -26,8 +45,9 @@ jobs:
       - name: "Checkout Code Repository"
         uses: actions/checkout@v3
         with:
-          path: jellyfin-web
           repository: jellyfin-sandbox/jellyfin-web-sandbox
+          ref: "${{ needs.gatherFacts.outputs.appGitSha }}"
+          path: jellyfin-web
 
       - name: "Copy debian Folder"
         run: cp -r jellyfin-deb/web-client/* jellyfin-web
@@ -41,3 +61,12 @@ jobs:
           name: jellyfin-web
           path: out
           if-no-files-found: error
+
+  publishDeb:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: "Download Artifacts"
+        uses: actions/download-artifact@v3
+
+      - name: "Debug"
+        run: ls -la
