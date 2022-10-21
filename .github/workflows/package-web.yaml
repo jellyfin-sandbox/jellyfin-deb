@@ -30,12 +30,13 @@ jobs:
           repository: jellyfin-sandbox/jellyfin-web-sandbox
 
       - name: "Copy debian Folder"
-        run: cp -r jellyfin-deb/web-client jellyfin-web/debian
+        run: cp -r jellyfin-deb/web-client/debian jellyfin-web/debian
 
       - name: "Build DEB"
         run: |-
           ls -la . jellyfin-deb jellyfin-web
           pushd jellyfin-web
+          sed -ie '/npm | nodejs/d' -e 's/debhelper (>= 9),/debhelper (>= 9)/' debian/control
           dpkg-buildpackage -us -uc --pre-clean --post-clean
           popd
           mkdir out
