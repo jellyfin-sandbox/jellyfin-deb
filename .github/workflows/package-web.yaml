@@ -63,6 +63,10 @@ jobs:
           if-no-files-found: error
 
   publishDeb:
+    needs:
+      - gatherFacts
+      - buildDeb
+    if: ${{ ! contains(needs.gatherFacts.outputs.appVersion, 'unstable') }}
     runs-on: ubuntu-22.04
     steps:
       - name: "Download Artifacts"
