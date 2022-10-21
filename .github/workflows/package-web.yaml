@@ -36,7 +36,7 @@ jobs:
         run: |-
           ls -la . jellyfin-deb jellyfin-web
           pushd jellyfin-web
-          sed -ie '/npm | nodejs/d' -e 's/debhelper (>= 9),/debhelper (>= 9)/' debian/control
+          sed -i -e '/npm | nodejs/d' -e 's/debhelper (>= 9),/debhelper (>= 9)/' debian/control
           dpkg-buildpackage -us -uc --pre-clean --post-clean
           popd
           mkdir out
