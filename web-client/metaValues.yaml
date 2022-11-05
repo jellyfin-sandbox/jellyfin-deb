@@ -1,3 +1,4 @@
 # https://github.com/jellyfin/jellyfin-web
-version: unstable-20221015
+repository: jellyfin-sandbox/jellyfin-web-sandbox
+version: unstable
 git_sha: 2d18f89bfd4060fddf8b4f661a1f0aa6e397b280
