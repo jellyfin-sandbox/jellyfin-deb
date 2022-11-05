@@ -52,7 +52,7 @@ jobs:
           path: jellyfin-code
 
       - name: "Copy debian Folder"
-        run: cp -r jellyfin-deb/web-client/* jellyfin-code
+        run: cp -r jellyfin-deb/server/* jellyfin-code
 
       - name: "Build DEB"
         run: bash jellyfin-code/buildDebInContainer.sh
