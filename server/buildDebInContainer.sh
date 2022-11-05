@@ -2,7 +2,7 @@
 
 set -exu
 
-pushd jellyfin-web
+pushd jellyfin-code
 
 # workaround for manually installed dotnet
 sed -i -e '/dotnet-sdk-6.0,/d' debian/control

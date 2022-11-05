@@ -2,7 +2,7 @@
 
 set -exu
 
-pushd jellyfin-web
+pushd jellyfin-code
 
 # workaround for manually installed NodeJS
 sed -i -e '/npm | nodejs/d' -e 's/debhelper (>= 9),/debhelper (>= 9)/' debian/control
