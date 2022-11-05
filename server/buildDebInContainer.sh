@@ -15,4 +15,4 @@ popd
 
 # move
 mkdir out
-mv jellyfin-web*.{deb,dsc,tar.gz,buildinfo,changes} out
+mv jellyfin*.{deb,dsc,tar.gz,buildinfo,changes} out
