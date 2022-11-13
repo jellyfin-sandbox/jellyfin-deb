@@ -8,8 +8,8 @@ pushd jellyfin-code
 sed -i -e '/dotnet-sdk-6.0,/d' debian/control
 
 # build deb
-export CONFIG_SITE="/etc/dpkg-cross/cross-config.${1:-amd64}"
-dpkg-buildpackage -us -uc --pre-clean --post-clean
+export CONFIG_SITE="/etc/dpkg-cross/cross-config.amd64"
+dpkg-buildpackage --unsigned-source --unsigned-changes --pre-clean --post-clean --host-arch "${1:-amd64}"
 
 popd
 

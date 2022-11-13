@@ -35,9 +35,16 @@ jobs:
       - gatherFacts
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:debian-20221018
+      image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:debian-20221113
       env:
         DEB_BUILD_OPTIONS: noddebs
+    strategy:
+      fail-fast: false
+      matrix:
+        TARGET_ARCH:
+          - amd64
+          - arm64
+          - armhf
     steps:
       - name: "Checkout DEB Repository"
         uses: actions/checkout@v3
@@ -55,12 +62,12 @@ jobs:
         run: cp -r jellyfin-deb/server/* jellyfin-code
 
       - name: "Build DEB"
-        run: bash jellyfin-code/buildDebInContainer.sh
+        run: bash jellyfin-code/buildDebInContainer.sh "${{ matrix.TARGET_ARCH }}"
 
       - name: "Publish Validation Artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: server-deb
+          name: server-deb_${{ matrix.TARGET_ARCH }}
           path: out
           if-no-files-found: error
 
@@ -73,8 +80,6 @@ jobs:
     steps:
       - name: "Download Artifacts"
         uses: actions/download-artifact@v3
-        with:
-          name: server-deb
 
       - name: "Debug"
         run: ls -la
