@@ -26,7 +26,7 @@ RUN rm -f /etc/apt/sources.list \
     && dpkg --add-architecture arm64 \
     && dpkg --add-architecture armhf \
     && apt-get update -qqy \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -o Dpkg::Options::="--force-overwrite" --no-install-recommends -qqy \
       bash \
       build-essential \
       ca-certificates \
