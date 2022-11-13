@@ -5,7 +5,13 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0.402-jammy
 COPY --from=node-donor /usr/local /usr/local
 
 # Prepare Ubuntu build environment
-RUN CODENAME="$(cat /etc/lsb-release | grep DISTRIB_CODENAME | cut -d = -f 2)" \
+RUN rm -f /etc/apt/sources.list \
+    && CODENAME="$(cat /etc/lsb-release | grep DISTRIB_CODENAME | cut -d = -f 2)" \
+    # Add AMD64 package ports list
+    && echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse" >>/etc/apt/sources.list.d/amd64.list \
+    && echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse" >>/etc/apt/sources.list.d/amd64.list \
+    && echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-backports main restricted universe multiverse" >>/etc/apt/sources.list.d/amd64.list \
+    && echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse" >>/etc/apt/sources.list.d/amd64.list \
     # Add ARM64 package ports list
     && echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME} main restricted universe multiverse" >>/etc/apt/sources.list.d/arm64.list \
     && echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME}-updates main restricted universe multiverse" >>/etc/apt/sources.list.d/arm64.list \
