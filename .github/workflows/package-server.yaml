@@ -35,12 +35,15 @@ jobs:
       - gatherFacts
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:debian-20221113
+      image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:${{ matrix.OS }}-20221113
       env:
         DEB_BUILD_OPTIONS: noddebs
     strategy:
       fail-fast: false
       matrix:
+        OS:
+          - debian
+          - ubuntu
         TARGET_ARCH:
           - amd64
           - arm64
@@ -67,7 +70,7 @@ jobs:
       - name: "Publish Validation Artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: server-deb_${{ matrix.TARGET_ARCH }}
+          name: server-deb_${{ matrix.OS }}-${{ matrix.TARGET_ARCH }}
           path: out
           if-no-files-found: error
 
