@@ -4,8 +4,20 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0.402-jammy
 
 COPY --from=node-donor /usr/local /usr/local
 
-# Prepare Debian build environment
-RUN dpkg --add-architecture arm64 \
+# Prepare Ubuntu build environment
+RUN CODENAME="$(lsb_release -c -s)" \
+    # Add ARM64 package ports list
+    && echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME} main restricted universe multiverse" >>/etc/apt/sources.list.d/arm64.list \
+    && echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME}-updates main restricted universe multiverse" >>/etc/apt/sources.list.d/arm64.list \
+    && echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME}-backports main restricted universe multiverse" >>/etc/apt/sources.list.d/arm64.list \
+    && echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME}-security main restricted universe multiverse" >>/etc/apt/sources.list.d/arm64.list \
+    # Add ARMHF package ports list
+    && echo "deb [arch=armhf] http://ports.ubuntu.com/ ${CODENAME} main restricted universe multiverse" >>/etc/apt/sources.list.d/armhf.list \
+    && echo "deb [arch=armhf] http://ports.ubuntu.com/ ${CODENAME}-updates main restricted universe multiverse" >>/etc/apt/sources.list.d/armhf.list \
+    && echo "deb [arch=armhf] http://ports.ubuntu.com/ ${CODENAME}-backports main restricted universe multiverse" >>/etc/apt/sources.list.d/armhf.list \
+    && echo "deb [arch=armhf] http://ports.ubuntu.com/ ${CODENAME}-security main restricted universe multiverse" >>/etc/apt/sources.list.d/armhf.list \
+    \
+    && dpkg --add-architecture arm64 \
     && dpkg --add-architecture armhf \
     && apt-get update -qqy \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
