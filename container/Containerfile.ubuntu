@@ -5,11 +5,15 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0.402-jammy
 COPY --from=node-donor /usr/local /usr/local
 
 # Prepare Debian build environment
-RUN apt-get update -qqy \
+RUN dpkg --add-architecture arm64 \
+    && dpkg --add-architecture armhf \
+    && apt-get update -qqy \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qqy \
       bash \
       build-essential \
       ca-certificates \
+      crossbuild-essential-arm64 \
+      crossbuild-essential-armhf \
       curl \
       debhelper \
       devscripts \
