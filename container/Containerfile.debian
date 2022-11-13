@@ -26,14 +26,20 @@ RUN dpkg --add-architecture arm64 \
       libcurl4-openssl-dev:arm64 \
       libcurl4-openssl-dev:armhf \
       libfontconfig1-dev \
+      libfontconfig1-dev:arm64 \
+      libfontconfig1-dev:armhf \
       libfreetype6-dev \
       libfreetype6-dev:arm64 \
       libfreetype6-dev:armhf \
       liblttng-ust0 \
+      liblttng-ust0:arm64 \
+      liblttng-ust0:armhf \
       libssl-dev \
       libssl-dev:arm64 \
       libssl-dev:armhf \
       libssl1.1 \
+      libstdc++6:arm64 \
+      libstdc++6:armhf \
       mmv \
     && rm -rf /var/lib/apt/lists/* \
     # Smoke Tests
