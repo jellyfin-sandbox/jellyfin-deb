@@ -13,10 +13,10 @@ on:
         required: true
         type: string
         description: The folder name containing the deb speck to build (i.e. server).
-      cpuArch:
+      cpuArches:
         required: true
         type: string
-        description: The CPU architectures to cross build for (i.e. amd64).
+        description: A stringified JSON array of CPU architectures to cross build for (i.e. ["amd64","amd64"]).
       repository:
         required: true
         type: string
@@ -37,6 +37,10 @@ jobs:
       image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:${{ inputs.buildImageTag }}
       env:
         DEB_BUILD_OPTIONS: noddebs
+    strategy:
+      fail-fast: false
+      matrix:
+        TARGET_ARCH: ${{ fromJSON(inputs.cpuArches) }}
     steps:
       - name: "Checkout DEB Repository"
         uses: actions/checkout@v3

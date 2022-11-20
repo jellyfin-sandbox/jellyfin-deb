@@ -38,7 +38,7 @@ jobs:
       buildOs: debian
       buildImageTag: debian-20221120
       debSpec: web-client
-      cpuArch: all
+      cpuArches: '["all"]'
       repository: ${{ needs.gatherFacts.outputs.appRepo }}
       repositoryRef: ${{ needs.gatherFacts.outputs.appGitSha }}
 
@@ -51,7 +51,7 @@ jobs:
       buildOs: ubuntu
       buildImageTag: ubuntu-20221120
       debSpec: web-client
-      cpuArch: all
+      cpuArches: '["all"]'
       repository: ${{ needs.gatherFacts.outputs.appRepo }}
       repositoryRef: ${{ needs.gatherFacts.outputs.appGitSha }}
 

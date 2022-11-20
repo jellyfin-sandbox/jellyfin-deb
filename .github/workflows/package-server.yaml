@@ -30,18 +30,11 @@ jobs:
     uses: ./.github/workflows/_meta-debBuild.yaml
     needs:
       - gatherFacts
-    strategy:
-      fail-fast: false
-      matrix:
-        TARGET_ARCH:
-          - amd64
-          - arm64
-          - armhf
     with:
       buildOs: debian
       buildImageTag: debian-20221120
       debSpec: server
-      cpuArch: ${{ matrix.TARGET_ARCH }}
+      cpuArches: '["amd64","arm64","armhf"]'
       repository: ${{ needs.gatherFacts.outputs.appRepo }}
       repositoryRef: ${{ needs.gatherFacts.outputs.appGitSha }}
 
@@ -50,18 +43,11 @@ jobs:
     uses: ./.github/workflows/_meta-debBuild.yaml
     needs:
       - gatherFacts
-    strategy:
-      fail-fast: false
-      matrix:
-        TARGET_ARCH:
-          - amd64
-          - arm64
-          - armhf
     with:
       buildOs: ubuntu
       buildImageTag: ubuntu-20221120
       debSpec: server
-      cpuArch: ${{ matrix.TARGET_ARCH }}
+      cpuArches: '["amd64","arm64","armhf"]'
       repository: ${{ needs.gatherFacts.outputs.appRepo }}
       repositoryRef: ${{ needs.gatherFacts.outputs.appGitSha }}
 
