@@ -1,0 +1,68 @@
+on:
+  workflow_call:
+    inputs:
+      buildOs:
+        required: true
+        type: string
+        description: The OS the deb is build on (i.e. debian)
+      buildImageTag:
+        required: true
+        type: string
+        description: The tag of the jellyfin-deb-builder image (i.e. debian-20221120).
+      debSpec:
+        required: true
+        type: string
+        description: The folder name containing the deb speck to build (i.e. server).
+      cpuArch:
+        required: true
+        type: string
+        description: The CPU architectures to cross build for (i.e. amd64).
+      repository:
+        required: true
+        type: string
+        description: The jellyfin code repository to package with the selected deb descriptor (i.e. jellyfin/jellyfin).
+      repositoryRef:
+        required: true
+        type: string
+        description: The jellyfin code repository ref to package with the selected deb descriptor (i.e. a given git hash or a git tag).
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  buildDeb:
+    runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:${{ inputs.buildImageTag }}
+      env:
+        DEB_BUILD_OPTIONS: noddebs
+    strategy:
+      fail-fast: false
+      matrix:
+        TARGET_ARCH: ${{ fromJSON(inputs.cpuArchs) }}
+    steps:
+      - name: "Checkout DEB Repository"
+        uses: actions/checkout@v3
+        with:
+          path: jellyfin-deb
+
+      - name: "Checkout Code Repository"
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.repositoryRef }}
+          path: jellyfin-code
+
+      - name: "Copy debian Folder"
+        run: cp -r jellyfin-deb/${{ inputs.debSpec }}/* jellyfin-code
+
+      - name: "Build DEB"
+        run: bash jellyfin-code/buildDebInContainer.sh "${{ matrix.TARGET_ARCH }}"
+
+      - name: "Publish Validation Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.debSpec }}-deb_${{ inputs.buildOs }}-${{ matrix.TARGET_ARCH }}
+          path: out
+          if-no-files-found: error

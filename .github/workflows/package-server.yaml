@@ -3,10 +3,6 @@ name: "📦 Build Server Package"
 on:
   workflow_dispatch:
 
-defaults:
-  run:
-    shell: bash
-
 permissions:
   contents: read
 
@@ -27,52 +23,41 @@ jobs:
           set -exu
 
           echo "APP_REPO=$(yq --exit-status '.repository' server/metaValues.yaml)" >> ${GITHUB_OUTPUT}
-          echo "APP_VERSION=$(yq --exit-status '.version' server/metaValues.yaml)" >> ${GITHUB_OUTPUT}
           echo "APP_GIT_SHA=$(yq --exit-status '.git_sha' server/metaValues.yaml)" >> ${GITHUB_OUTPUT}
+          echo "APP_VERSION=$(yq --exit-status '.version' server/metaValues.yaml)" >> ${GITHUB_OUTPUT}
 
-  buildDeb:
-    needs:
-      - gatherFacts
-    runs-on: ubuntu-22.04
-    container:
-      image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:${{ matrix.OS }}-20221113
-      env:
-        DEB_BUILD_OPTIONS: noddebs
+  debian:
+    uses: ./.github/workflows/_meta-debBuild.yaml
     strategy:
-      fail-fast: false
       matrix:
-        OS:
-          - debian
-          - ubuntu
         TARGET_ARCH:
           - amd64
           - arm64
           - armhf
-    steps:
-      - name: "Checkout DEB Repository"
-        uses: actions/checkout@v3
-        with:
-          path: jellyfin-deb
+    with:
+      buildOs: debian
+      buildImageTag: debian-20221120
+      debSpec: server
+      cpuArch: ${{ matrix.TARGET_ARCH }}
+      repository: ${{ needs.gatherFacts.outputs.appRepo }}
+      repositoryRef: ${{ needs.gatherFacts.outputs.appGitSha }}
 
-      - name: "Checkout Code Repository"
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ needs.gatherFacts.outputs.appRepo }}
-          ref: ${{ needs.gatherFacts.outputs.appGitSha }}
-          path: jellyfin-code
 
-      - name: "Copy debian Folder"
-        run: cp -r jellyfin-deb/server/* jellyfin-code
-
-      - name: "Build DEB"
-        run: bash jellyfin-code/buildDebInContainer.sh "${{ matrix.TARGET_ARCH }}"
-
-      - name: "Publish Validation Artifact"
-        uses: actions/upload-artifact@v3
-        with:
-          name: server-deb_${{ matrix.OS }}-${{ matrix.TARGET_ARCH }}
-          path: out
-          if-no-files-found: error
+  ubuntu:
+    uses: ./.github/workflows/_meta-debBuild.yaml
+    strategy:
+      matrix:
+        TARGET_ARCH:
+          - amd64
+          - arm64
+          - armhf
+    with:
+      buildOs: ubuntu
+      buildImageTag: ubuntu-20221120
+      debSpec: server
+      cpuArch: ${{ matrix.TARGET_ARCH }}
+      repository: ${{ needs.gatherFacts.outputs.appRepo }}
+      repositoryRef: ${{ needs.gatherFacts.outputs.appGitSha }}
 
   publishDeb:
     needs:
