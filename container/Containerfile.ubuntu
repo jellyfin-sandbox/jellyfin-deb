@@ -1,6 +1,6 @@
-FROM docker.io/library/node:16.18.0-bullseye-slim as node-donor
+FROM docker.io/library/node:16.18.1-bullseye-slim as node-donor
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0.402-jammy
+FROM mcr.microsoft.com/dotnet/sdk:6.0.403-focal
 
 COPY --from=node-donor /usr/local /usr/local
 
@@ -49,9 +49,9 @@ RUN rm -f /etc/apt/sources.list \
       libfreetype6-dev \
       libfreetype6-dev:arm64 \
       libfreetype6-dev:armhf \
-      liblttng-ust1 \
-      liblttng-ust1:arm64 \
-      liblttng-ust1:armhf \
+      liblttng-ust0 \
+      liblttng-ust0:arm64 \
+      liblttng-ust0:armhf \
       libssl-dev \
       libssl-dev:arm64 \
       libssl-dev:armhf \
