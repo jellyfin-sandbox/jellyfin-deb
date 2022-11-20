@@ -54,7 +54,8 @@ jobs:
   publishDeb:
     needs:
       - gatherFacts
-      - buildDeb
+      - debian
+      - ubuntu
     if: ${{ ! contains(needs.gatherFacts.outputs.appVersion, 'unstable') }}
     runs-on: ubuntu-22.04
     steps:
