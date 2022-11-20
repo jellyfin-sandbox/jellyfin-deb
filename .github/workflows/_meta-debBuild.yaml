@@ -37,10 +37,6 @@ jobs:
       image: ghcr.io/${{ github.repository_owner }}/jellyfin-deb-builder:${{ inputs.buildImageTag }}
       env:
         DEB_BUILD_OPTIONS: noddebs
-    strategy:
-      fail-fast: false
-      matrix:
-        TARGET_ARCH: ${{ fromJSON(inputs.cpuArchs) }}
     steps:
       - name: "Checkout DEB Repository"
         uses: actions/checkout@v3
