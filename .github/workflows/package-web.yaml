@@ -32,6 +32,8 @@ jobs:
 
   debian:
     uses: ./.github/workflows/_meta-debBuild.yaml
+    needs:
+      - gatherFacts
     with:
       buildOs: debian
       buildImageTag: debian-20221120
@@ -43,6 +45,8 @@ jobs:
 
   ubuntu:
     uses: ./.github/workflows/_meta-debBuild.yaml
+    needs:
+      - gatherFacts
     with:
       buildOs: ubuntu
       buildImageTag: ubuntu-20221120

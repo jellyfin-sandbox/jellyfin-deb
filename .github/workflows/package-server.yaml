@@ -28,6 +28,8 @@ jobs:
 
   debian:
     uses: ./.github/workflows/_meta-debBuild.yaml
+    needs:
+      - gatherFacts
     strategy:
       matrix:
         TARGET_ARCH:
@@ -45,6 +47,8 @@ jobs:
 
   ubuntu:
     uses: ./.github/workflows/_meta-debBuild.yaml
+    needs:
+      - gatherFacts
     strategy:
       matrix:
         TARGET_ARCH:
